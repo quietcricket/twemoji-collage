@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Page Title</title>
+    <script src="static/colors.js?rand={{random()}}"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      img {
+        width: 20px;
+      }
+      .row {
+        display: flex;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canv"></canvas>
+    <div id="output"></div>
+    <script>
+      function init() {
+        let c = document.querySelector("#canv");
+        let con = c.getContext("2d");
+        let img = new Image();
+
+        img.addEventListener("load", evt => {
+          let w = 400;
+          c.width = w;
+          c.height = (w / img.width) * img.height;
+          img.style.filter = "blur(10px)";
+          con.drawImage(img, 0, 0, c.width, c.height);
+          let pixels = con.getImageData(0, 0, c.width, c.height);
+          gen(pixels.data, c.width, c.height);
+        });
+        img.src = "static/lee1.jpeg";
+      }
+
+      function gen(data, width, height, skip = 3) {
+        let holder = document.querySelector("#output");
+        for (let i = skip; i < height; i += skip) {
+          let row = document.createElement("div");
+          row.classList = "row";
+          for (let j = skip; j < width; j += skip) {
+            let p = (j + i * width) * 4;
+            let em = closestEmoji(data[p], data[p + 1], data[p + 2]);
+            let img = new Image();
+            img.src = em.src;
+            img.alt = em.char;
+            row.appendChild(img);
+          }
+          holder.appendChild(row);
+        }
+        document.querySelector("#canv").style.display = "none";
+      }
+
+      function distance(r1, g1, b1, r2, g2, b2) {
+        return Math.pow(r1 - r2, 2) + Math.pow(g1 - g2, 2) + Math.pow(b1 - b2, 2);
+      }
+      function closestEmoji(r, g, b) {
+        let d = 255 * 255 * 3;
+        let closest = null;
+        for (let e of COLORS) {
+          let dd = distance(r, g, b, e.r, e.g, e.b);
+          if (dd < d) {
+            closest = e;
+            d = dd;
+          }
+        }
+        return closest;
+      }
+      init();
+    </script>
+  </body>
+</html>

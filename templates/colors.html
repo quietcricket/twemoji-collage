@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/fast-average-color/dist/index.min.js"></script>
+
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="emojis">{% for e in emojis %}{{e.char}}{% endfor %}</div>
+    <script>
+      let holder = document.querySelector("#emojis");
+      twemoji.parse(document.querySelector("#emojis"), { crossorigin: "anonymous" });
+      /*
+      const fac = new FastAverageColor();
+
+      let colors = [];
+      for (let img of document.querySelectorAll("img")) {
+        let n = new Image();
+        n.crossOrigin = "Anonymous";
+        n.alt = img.alt;
+        n.src = img.src;
+        holder.appendChild(n);
+        holder.removeChild(img);
+        n.addEventListener("load", async evt => {
+          let c = await fac.getColorAsync(evt.currentTarget);
+          colors.push({ char: evt.currentTarget.alt, r: c.value[0], g: c.value[1], b: c.value[2], a: c.value[3], src: evt.currentTarget.src });
+        });
+      }
+      */
+    </script>
+  </body>
+</html>
